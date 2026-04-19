@@ -25,6 +25,12 @@ public class Home implements Screen {
     public Scene content() {
         menuScreen = new Menu(
                 navigateToGame,
+                () -> screenController.navigate(new org.astropanty.ui.game.screens.NetworkCharacterSelect(
+                        () -> screenController.navigate(menuScreen),
+                        (selectedShipId) -> screenController
+                                .navigate(new org.astropanty.ui.game.screens.NetworkGameProper(
+                                        () -> screenController.navigate(menuScreen), screenController,
+                                        selectedShipId)))),
                 () -> screenController.navigate(aboutScreen),
                 () -> screenController.navigate(creditsScreen),
                 () -> System.exit(0));

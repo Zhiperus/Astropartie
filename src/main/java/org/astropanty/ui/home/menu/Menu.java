@@ -12,12 +12,15 @@ import javafx.scene.text.TextAlignment;
 
 public class Menu implements Screen {
     private final Runnable navigateToGame;
+    private final Runnable navigateToMultiplayer;
     private final Runnable navigateToAbout;
     private final Runnable navigateToCredits;
     private final Runnable exitGame;
 
-    public Menu(Runnable navigateToGame, Runnable navigateToAbout, Runnable navigateToCredits, Runnable exitGame) {
+    public Menu(Runnable navigateToGame, Runnable navigateToMultiplayer, Runnable navigateToAbout,
+            Runnable navigateToCredits, Runnable exitGame) {
         this.navigateToGame = navigateToGame;
+        this.navigateToMultiplayer = navigateToMultiplayer;
         this.navigateToAbout = navigateToAbout;
         this.navigateToCredits = navigateToCredits;
         this.exitGame = exitGame;
@@ -32,13 +35,14 @@ public class Menu implements Screen {
         title.setFont(Font.font("Orbitron", 48)); // Space-style font
 
         // Buttons
-        Button playButton = new Button("Play Game", navigateToGame);
+        Button playButton = new Button("Play Local Co-op", navigateToGame);
+        Button multiButton = new Button("Play Online Multiplayer", navigateToMultiplayer);
         Button aboutButton = new Button("About", navigateToAbout);
         Button creditsButton = new Button("Credits", navigateToCredits);
         Button exitButton = new Button("Exit", exitGame);
 
         // Layout for buttons
-        VBox layout = new VBox(20, title, playButton, aboutButton, creditsButton, exitButton);
+        VBox layout = new VBox(20, title, playButton, multiButton, aboutButton, creditsButton, exitButton);
         layout.setAlignment(Pos.CENTER);
 
         return getBackgroundWithContent(layout);

@@ -70,4 +70,12 @@ public class Sprite {
 	public void setYPos(double yPos) {
 		this.yPos = yPos;
 	}
+
+	public void setRotation(double r) {
+		this.rotation = r;
+	}
+
+	public void setImage(Image img) {
+		this.img = img;
+	}
 }
