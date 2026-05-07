@@ -26,7 +26,7 @@ public class Menu implements Screen {
     @Override
     public Scene content() {
         // Title
-        Text title = new Text("Astropanty");
+        Text title = new Text("Pulsar");
         title.setStyle("-fx-font-size: 48px; -fx-font-weight: bold; -fx-fill: white;");
         title.setTextAlignment(TextAlignment.CENTER);
         title.setFont(Font.font("Orbitron", 48)); // Space-style font

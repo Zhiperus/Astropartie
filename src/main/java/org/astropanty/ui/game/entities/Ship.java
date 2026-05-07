@@ -6,7 +6,9 @@ import java.util.List;
 import org.astropanty.ui.game.screens.GameProper;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 /**
  * Represents a player's ship in the game.
@@ -29,6 +31,8 @@ public class Ship extends Sprite implements Runnable {
 
     private int movementSpeed; // Speed of the ship's forward movement
     private final int ROTATION_SPEED = 3; // Speed of the ship's rotation
+    private double hitFlashTimer = 0;
+    private static final double HIT_FLASH_DURATION = 0.4;
 
     /**
      * Constructs a new ship with initial position, name, and sprite image.
@@ -133,6 +137,29 @@ public class Ship extends Sprite implements Runnable {
         this.bulletDamage = defaultBulletDamage;
     }
 
+    public void triggerHitFlash() {
+        this.hitFlashTimer = HIT_FLASH_DURATION;
+    }
+
+    public void decrementHitFlash(double delta) {
+        if (hitFlashTimer > 0) hitFlashTimer = Math.max(0, hitFlashTimer - delta);
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        super.render(gc);
+        if (hitFlashTimer > 0) {
+            double alpha = (hitFlashTimer / HIT_FLASH_DURATION) * 0.6;
+            gc.save();
+            gc.translate(xPos + width / 2, yPos + height / 2);
+            gc.rotate(rotation);
+            gc.translate(-width / 2, -height / 2);
+            gc.setGlobalAlpha(alpha);
+            gc.setFill(Color.RED);
+            gc.fillRect(0, 0, width, height);
+            gc.restore();
+        }
+    }
 
     /**
      * Reduces the ship's health by the specified damage amount.
