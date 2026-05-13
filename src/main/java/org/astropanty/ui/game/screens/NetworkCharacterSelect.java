@@ -19,12 +19,17 @@ import javafx.scene.text.Text;
 public class NetworkCharacterSelect implements Screen {
     private final Runnable navigateToMenu;
     private final Consumer<Integer> connectToLobby;
+    private final String playerName;
+    private final String ipAddress;
     private int selectedSelection = -1;
     private final ImageView mySelection = new ImageView();
 
-    public NetworkCharacterSelect(Runnable navigateToMenu, Consumer<Integer> connectToLobby) {
+    public NetworkCharacterSelect(Runnable navigateToMenu, Consumer<Integer> connectToLobby,
+            String playerName, String ipAddress) {
         this.navigateToMenu = navigateToMenu;
         this.connectToLobby = connectToLobby;
+        this.playerName = playerName;
+        this.ipAddress = ipAddress;
 
         mySelection.setFitWidth(100);
         mySelection.setFitHeight(100);
@@ -33,10 +38,21 @@ public class NetworkCharacterSelect implements Screen {
         mySelection.setImage(null);
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
     @Override
     public Scene content() {
         Text title = new Text("Select Your Multiplayer Ship");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: white;");
+
+        Text nameDisplay = new Text("Playing as: " + playerName + " | Server: " + ipAddress);
+        nameDisplay.setStyle("-fx-font-size: 14px; -fx-fill: #aaaaaa;");
 
         HBox shipSelection = createShipSelectionButtons();
 
@@ -56,7 +72,7 @@ public class NetworkCharacterSelect implements Screen {
         HBox actionButtons = new HBox(20, backButton, startButton);
         actionButtons.setAlignment(Pos.CENTER);
 
-        VBox mainLayout = new VBox(40, title, playerPanel, shipSelection, actionButtons);
+        VBox mainLayout = new VBox(30, title, nameDisplay, playerPanel, shipSelection, actionButtons);
         mainLayout.setPadding(new Insets(20));
         mainLayout.setAlignment(Pos.CENTER);
 
@@ -91,3 +107,4 @@ public class NetworkCharacterSelect implements Screen {
         return shipButtons;
     }
 }
+

@@ -12,6 +12,7 @@ import org.astropanty.ui.game.logic.NetworkGameTimer;
 import org.astropanty.ui.navigation.Screen;
 import org.astropanty.ui.navigation.ScreenController;
 
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -30,11 +31,16 @@ public class NetworkGameProper implements Screen {
     private final ScreenController screenController;
     private final Runnable navigateToMenu;
     private final int selectedShipId;
+    private final String ipAddress;
+    private final String playerName;
 
-    public NetworkGameProper(Runnable navigateToMenu, ScreenController screenController, int selectedShipId) {
+    public NetworkGameProper(Runnable navigateToMenu, ScreenController screenController,
+            int selectedShipId, String ipAddress, String playerName) {
         this.screenController = screenController;
         this.navigateToMenu = navigateToMenu;
         this.selectedShipId = selectedShipId;
+        this.ipAddress = ipAddress;
+        this.playerName = playerName;
     }
 
     @Override
@@ -42,12 +48,14 @@ public class NetworkGameProper implements Screen {
         this.root = new Group();
         this.scene = getBackgroundWithContent(root); // starry star background
         this.canvas = new Canvas(App.WIDTH, App.HEIGHT);
+        this.canvas.setFocusTraversable(true);
         this.root.getChildren().add(this.canvas);
+        Platform.runLater(this.canvas::requestFocus);
 
         GraphicsContext gc = this.canvas.getGraphicsContext2D();
 
         GameClient client = new GameClient();
-        client.connect("localhost", 8080);
+        client.connect(ipAddress, 8080, playerName);
 
         ShipRepository.ShipAttributes attrs = ShipRepository.getShipAttributes(0);
 

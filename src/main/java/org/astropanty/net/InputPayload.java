@@ -11,6 +11,7 @@ public class InputPayload implements Serializable {
     public boolean left;
     public boolean right;
     public boolean shoot;
+    public String chatMessage = null;
 
     public InputPayload(int playerId, int shipType, boolean forward, boolean left, boolean right, boolean shoot) {
         this.playerId = playerId;

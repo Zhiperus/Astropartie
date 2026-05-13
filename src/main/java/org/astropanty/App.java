@@ -26,7 +26,7 @@ public class App extends Application {
         homeScreen = new Home(() -> screenController.navigate(gameScreen), screenController);
         gameScreen = new Game(() -> screenController.navigate(homeScreen), screenController);
 
-        stage.setTitle("Astropanty");
+        stage.setTitle("Pulsar");
         screenController.navigate(homeScreen);
     }
 

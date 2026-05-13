@@ -3,6 +3,9 @@ package org.astropanty.ui.home;
 import org.astropanty.ui.home.about.About;
 import org.astropanty.ui.home.credits.Credits;
 import org.astropanty.ui.home.menu.Menu;
+import org.astropanty.ui.game.screens.NetworkConnectionSetup;
+import org.astropanty.ui.game.screens.NetworkCharacterSelect;
+import org.astropanty.ui.game.screens.NetworkGameProper;
 import org.astropanty.ui.navigation.Screen;
 import org.astropanty.ui.navigation.ScreenController;
 
@@ -25,12 +28,17 @@ public class Home implements Screen {
     public Scene content() {
         menuScreen = new Menu(
                 navigateToGame,
-                () -> screenController.navigate(new org.astropanty.ui.game.screens.NetworkCharacterSelect(
+                () -> screenController.navigate(new NetworkConnectionSetup(
                         () -> screenController.navigate(menuScreen),
-                        (selectedShipId) -> screenController
-                                .navigate(new org.astropanty.ui.game.screens.NetworkGameProper(
-                                        () -> screenController.navigate(menuScreen), screenController,
-                                        selectedShipId)))),
+                        (playerName, ipAddress) -> screenController
+                                .navigate(new NetworkCharacterSelect(
+                                        () -> screenController.navigate(menuScreen),
+                                        (selectedShipId) -> screenController
+                                                .navigate(new NetworkGameProper(
+                                                        () -> screenController.navigate(menuScreen),
+                                                        screenController, selectedShipId,
+                                                        ipAddress, playerName)),
+                                        playerName, ipAddress)))),
                 () -> screenController.navigate(aboutScreen),
                 () -> screenController.navigate(creditsScreen),
                 () -> System.exit(0));
@@ -41,3 +49,4 @@ public class Home implements Screen {
     }
 
 }
+

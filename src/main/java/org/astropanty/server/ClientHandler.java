@@ -6,6 +6,7 @@ import org.astropanty.net.InputPayload;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientHandler implements Runnable {
     private final Socket socket;
@@ -17,6 +18,8 @@ public class ClientHandler implements Runnable {
 
     // Server loop reads this directly
     public volatile InputPayload latestInput = null;
+    public volatile String playerName = "Player";
+    public final ConcurrentLinkedQueue<String> pendingChatMessages = new ConcurrentLinkedQueue<>();
 
     public ClientHandler(Socket socket, GameServer server, int playerId) {
         this.socket = socket;
@@ -37,15 +40,24 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
+            // Read player name sent by client after connection
+            playerName = (String) in.readObject();
+            System.out.println("Player " + playerId + " registered as: " + playerName);
+
             while (true) {
                 // Blocking read - waits for client input payload
                 InputPayload input = (InputPayload) in.readObject();
                 if (input != null && input.playerId == this.playerId) {
+                    if (input.chatMessage != null && !input.chatMessage.isBlank()) {
+                        pendingChatMessages.offer(input.chatMessage);
+                        input.chatMessage = null;
+                    }
                     this.latestInput = input;
                 }
             }
         } catch (Exception e) {
-            System.out.println("Player " + playerId + " disconnected.");
+            System.out.println("Player " + playerId + " (" + playerName + ") disconnected.");
+            server.handleDisconnect(playerId);
         }
     }
 

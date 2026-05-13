@@ -17,6 +17,16 @@ public class GameStatePayload implements Serializable {
     public double[] projYs = new double[20];
     public boolean[] projActive = new boolean[20];
 
+    // Chat and identity
+    public String[] playerNames = new String[4];
+    public String[] recentChats = new String[5];
+
+    // Game state machine
+    // 0=WAITING_LOBBY, 1=COUNTDOWN, 2=PLAYING, 3=GAME_OVER
+    public int gamePhase = 0;
+    public long phaseTimeRemaining = 0; // millis remaining in current phase
+    public int winnerId = -1;           // -1 = no winner / draw
+
     public GameStatePayload() {
         // Initialize to safe defaults
         for (int i = 0; i < 4; i++) {
