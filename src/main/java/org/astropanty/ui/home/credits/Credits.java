@@ -21,7 +21,7 @@ public class Credits implements Screen {
 
         Text creditsText = new Text(
                 "Game Design: Bossing Inc.\n" +
-                        "Programming: Iorie Alen Chua\n\t\t\t\tEunel Jacob Joyosa\n\t\t\t\tRoberto Neil Santos\n" +
+                        "Programming: Iorie Alen Chua\n\t\t\t\tEunel Jacob Joyosa\n\t\t\t\tRoberto Neil Santos\n\t\t\t\tHan Caleb Castro\n\t\t\t\tPaul Hadley Fababeir\n" +
                         "Art and Graphics: Eunel Jacob Joyosa\n" +
                         "Inspired by: Astro Duel Franchise\n\n" +
                         "Thank you for playing our game!");
